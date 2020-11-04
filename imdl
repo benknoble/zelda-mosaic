@@ -1,0 +1,35 @@
+#! /usr/bin/env bash
+
+set -euo pipefail
+
+log() {
+  printf '%s\n' "$@"
+} >&2
+
+usage() {
+  cat <<DOG
+usage: $0 <image_url> <game>
+
+downloads the image into a folder based on the game
+DOG
+}
+
+die() {
+  local ex="${1:-1}"
+  exit "$ex"
+}
+
+usage_and_die() { usage && die; }
+
+main() {
+  if (($# != 2)) ; then
+    usage_and_die
+  fi
+  local url="$1"
+  local game="$2"
+  local dir="images/${game//[^[:alnum:]]/_}"
+  local output="$dir/${url//[^[:alnum:]]/_}"
+  curl -sSL --create-dirs -o "$output" "$url"
+}
+
+main "$@"
