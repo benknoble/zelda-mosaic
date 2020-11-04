@@ -14,7 +14,9 @@ def predicate_name(column_names):
 
 
 def predicate_ify(name, values):
-    args = ", ".join(map(lambda v: f"'{v}'", values))
+    args = ", ".join(
+        map(lambda v: "'{}'".format(v.replace("'", r"\'")), values)
+    )
     return f"{name}({args})"
 
 
