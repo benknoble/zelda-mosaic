@@ -8,7 +8,7 @@ zelda-scrape.pl: zeldadungeon_urls.csv update-zelda-scrape.vim csv_to_prolog.py
 	vim -S update-zelda-scrape.vim
 
 images.csv: zelda-scrape.pl
-	./zelda-scrape.pl | grep -v 'reddit\|wp-content' > '$@'
+	./zelda-scrape.pl | grep -v 'reddit\|wp-content\|Map_HyruleCastle"\|Genie-Art.png' > '$@'
 
 images: images.csv
 	mkdir '$@'
