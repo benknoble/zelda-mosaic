@@ -250,7 +250,7 @@ run(Output) :-
     Output = Images.
 
 write_image_game(image_game(Link, Game)) :-
-    format('~w,~w~n', [Link, Game]).
+    format('"~w","~w"~n', [Link, Game]).
 
 main(_) :-
     run(Output),
