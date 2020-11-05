@@ -28,7 +28,7 @@ main() {
   local url="$1"
   local game="$2"
   local dir="images/${game//[^[:alnum:]]/_}"
-  local output="$dir/${url//[^[:alnum:]]/_}"
+  local output="$dir/${url//[^[:alnum:].]/_}"
   curl -sSL --create-dirs -o "$output" "$url"
 }
 
