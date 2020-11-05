@@ -13,3 +13,6 @@ images.csv: zelda-scrape.pl
 images: images.csv
 	mkdir '$@'
 	./csv_to_shell.py images.csv | xargs -L1 -P'$(PROCS)' ./imdl
+
+images.tar.gz: images
+	tar czf "$@" "$?"
