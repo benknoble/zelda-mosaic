@@ -53,9 +53,6 @@ run(Output) :-
     % length(Images, N),
     Output = Images.
 
-write_image_game(image_game(Link, Game)) :-
-    format('"~w","~w"~n', [Link, Game]).
-
 main(_) :-
     run(Output),
     csv_write_stream(user_output, [image_game('image_url', 'game')|Output], [functor(image_game)]).
