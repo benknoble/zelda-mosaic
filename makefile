@@ -15,4 +15,4 @@ images: images.csv
 	./csv_to_shell.py images.csv | xargs -L1 -P'$(PROCS)' ./imdl
 
 images.tar.gz: images
-	tar czf "$@" "$?"
+	tar czf '$@' '$?'
