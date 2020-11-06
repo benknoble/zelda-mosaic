@@ -1,0 +1,36 @@
+#! /usr/bin/env bash
+
+set -euo pipefail
+
+log() {
+  printf '%s\n' "$@"
+} >&2
+
+usage() {
+  cat <<DOG
+usage: $0 <input_dir> <size> <output_dir>
+
+resizes images from <input_dir> to <output_dir> to have <size>
+cf. ImageMagick(1)
+DOG
+}
+
+die() {
+  local ex="${1:-1}"
+  exit "$ex"
+}
+
+usage_and_die() { usage && die; }
+
+main() {
+  if (($# != 3)) ; then
+    usage_and_die
+  fi
+  local input="$1"
+  local size="$2"
+  local output="$3"
+  cp -R "$input" "$output"
+  find "$output" -type f -print0 | xargs -0 -n1 -I{} magick mogrify "{}[$size]"
+}
+
+main "$@"

@@ -1,0 +1,7 @@
+#! /bin/sh
+
+case $# in
+  1) ;; # continue
+  *) printf '%s\n' "usage: $0 <dir>" >&2; exit 1;;
+esac
+exiftool -ImageSize -r "$1" | grep -v '^==' | sort | uniq -c
