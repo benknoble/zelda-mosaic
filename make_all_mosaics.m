@@ -1,7 +1,11 @@
+addpath('mat2tiles');
+
 map = @(ks, vs) containers.Map(ks, vs);
 
+block_size = 75;
 game_art_dir = 'keyart-resized';
-thumnail_dir = 'thumbnails';
+thumbnail_dir = 'thumbnails';
+
 games = [
     map('adventure_of_link', struct('keyart_file', 'adventureoflink.png', 'thumbnail_dir', 'Adventure_of_Link'));...
     map('a_link_to_the_past', struct('keyart_file', 'alinktothepast.jpg', 'thumbnail_dir', 'A_Link_to_the_Past'));...
@@ -28,3 +32,10 @@ for k = games.keys
     disp([key, ' -->'])
     disp(games(key))
 end
+
+% test
+img = im2double(imread(fullfile(game_art_dir, games('twilight_princess').keyart_file)));
+thumbs = read_images(fullfile(thumbnail_dir, games('twilight_princess').thumbnail_dir, '*_*'));
+new_img = mosaic(img, thumbs, block_size);
+figure;
+imshow(new_img);
