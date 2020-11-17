@@ -3,7 +3,7 @@
 addpath('mat2tiles');
 
 J = im2double(imread('keyart-resized/twilightprincess.jpg'));
-[rows, cols, n] = size(J);
+[rows, cols, ~] = size(J);
 block_size = 75;
 n_blocks = rows / 75 * cols / 75;
 
