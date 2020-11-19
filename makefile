@@ -6,7 +6,7 @@ PROCS = 1
 SIZE = 75x75!
 
 images.csv: zelda-scrape.pl zeldadungeon_urls.csv
-	./zelda-scrape.pl | grep -v 'reddit\|wp-content\|Map_HyruleCastle,\|Genie-Art.png' > '$@'
+	./zelda-scrape.pl | grep -v 'reddit\|wp-content\|Map_HyruleCastle,\|Genie-Art.png\|[gG][iI][fF]' > '$@'
 
 images: images.csv
 	mkdir '$@'
