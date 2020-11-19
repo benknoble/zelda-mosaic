@@ -1,5 +1,4 @@
 function out = mosaic(J, thumbnails, block_size)
-    J = im2double(imread('keyart-resized/twilightprincess.jpg'));
     [rows, cols, ~] = size(J);
     n_blocks = rows / block_size * cols / block_size;
 
