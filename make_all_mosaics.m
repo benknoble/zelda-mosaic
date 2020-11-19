@@ -36,6 +36,6 @@ end
 % test
 img = im2double(imread(fullfile(game_art_dir, games('twilight_princess').keyart_file)));
 thumbs = read_images(fullfile(thumbnail_dir, games('twilight_princess').thumbnail_dir, '*_*'));
-new_img = mosaic(img, thumbs, block_size);
+new_img = mosaic(img, permute(cat(4, thumbs.I), [4, 1:3]), block_size);
 figure;
 imshow(new_img);
