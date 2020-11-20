@@ -38,4 +38,15 @@ function out = mosaic3(J, thumbnails, block_size)
     % figure;
     % imshow(cell2mat(chunks))
     out = cell2mat(chunks);
+    out = imgaussfilt(out, 2);
+    for x = 75:75:cols-75
+        for xx = x-10:x+10
+            out(:, xx, :) = mean(out(:, xx-10:xx+10, :), 2);
+        end
+    end
+    for y = 75:75:rows-75
+        for yy = y-10:y+10
+            out(yy, :, :) = mean(out(yy-10:yy+10, :, :), 1);
+        end
+    end
 end
