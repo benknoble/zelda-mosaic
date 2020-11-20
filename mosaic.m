@@ -10,16 +10,13 @@ function out = mosaic(J, thumbnails, block_size)
     for i = 1:row_chunks
         for j = 1:col_chunks
             chunk = chunks{i, j};
-            best_thumbnail = squeeze(thumbnails(1, :, :, :));
-            best_mse = immse(chunk, squeeze(thumbnails(1, :, :, :)));
+            mses = ones([1, n_thumbs]);
             for t = 1:n_thumbs
-                cur_mse = immse(chunk, squeeze(thumbnails(t, :, :, :)));
-                if cur_mse < best_mse
-                    best_mse = cur_mse;
-                    best_thumbnail = squeeze(thumbnails(t, :, :, :));
-                end
+                mses(t) = immse(chunk, squeeze(thumbnails(t, :, :, :)));
             end
-            chunks{i, j} = best_thumbnail;
+            best_thumbnail_indices = find(mses == min(mses));
+            best_thumbnail_index = best_thumbnail_indices(1); % only take the first
+            chunks{i, j} = squeeze(thumbnails(best_thumbnail_index, :, :, :));
             % figure;
             % imshow(chunks{i, j})
         end
