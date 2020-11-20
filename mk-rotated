@@ -1,0 +1,43 @@
+#! /usr/bin/env bash
+
+set -euo pipefail
+
+log() {
+  printf '%s\n' "$@"
+} >&2
+
+usage() {
+  cat <<DOG
+usage: $0 <input_dir>
+
+rotates images from <input_dir> w/ all 4 90-degree rotations
+cf. ImageMagick(1)
+DOG
+}
+
+die() {
+  local ex="${1:-1}"
+  exit "$ex"
+}
+
+usage_and_die() { usage && die; }
+
+main() {
+  if (($# != 1)) ; then
+    usage_and_die
+  fi
+  local input="$1"
+  CMD="$(cat <<'DOG'
+    dir="$(dirname $1)";
+    file="$(basename $1)";
+    magick "$1" \
+      -rotate 90 -write "$dir/90_$file" \
+      -rotate 90 -write "$dir/180_$file" \
+      -rotate 90 -write "$dir/270_$file" \
+      /dev/null
+DOG
+  )"
+  find "$input" -type f -exec sh -c "${CMD[@]}" sh {} \;
+}
+
+main "$@"

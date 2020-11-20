@@ -17,6 +17,7 @@ images.tar.gz: images
 
 thumbnails: images
 	./mk-resized '$?' '$(SIZE)' '$@'
+	./mk-rotated '$@'
 
 thumbnails.tar.gz: thumbnails
 	tar czf '$@' '$?'
