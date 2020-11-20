@@ -25,17 +25,45 @@ games = [
     map('wind_waker', struct('keyart_file', 'windwaker.jpg', 'thumbnail_dir', 'Wind_Waker'));
 ];
 
+mkdir v1mosaics;
+mkdir v2mosaics;
+mkdir v3mosaics;
+
 % iterating over the games
-% e.g.,
 for k = games.keys
     key = k{1}; % extract key from cell
     disp([key, ' -->'])
     disp(games(key))
+
+    disp('>>> read image');
+    img = im2double(imread(fullfile(game_art_dir, games(key).keyart_file)));
+    disp('<<< read image');
+
+    disp('>>> read thumbs');
+    thumbs = read_images(fullfile(thumbnail_dir, games(key).thumbnail_dir, '*_*'));
+    thumbs_imgs = permute(cat(4, thumbs.I), [4, 1:3]);
+    disp('<<< read thumbs');
+
+    disp('>>> make mosaic1');
+    new_img = mosaic1(img, thumbs_imgs, block_size);
+    imwrite(new_img, fullfile('v1mosaics', [key, '.png']));
+    disp('<<< make mosaic1');
+
+    disp('>>> make mosaic2');
+    new_img = mosaic2(img, thumbs_imgs, block_size);
+    imwrite(new_img, fullfile('v2mosaics', [key, '.png']));
+    disp('<<< make mosaic2');
+
+    disp('>>> make mosaic3');
+    new_img = mosaic3(img, thumbs_imgs, block_size);
+    imwrite(new_img, fullfile('v3mosaics', [key, '.png']));
+    disp('<<< make mosaic3');
 end
 
 % test
-img = im2double(imread(fullfile(game_art_dir, games('twilight_princess').keyart_file)));
-thumbs = read_images(fullfile(thumbnail_dir, games('twilight_princess').thumbnail_dir, '*_*'));
-new_img = mosaic(img, permute(cat(4, thumbs.I), [4, 1:3]), block_size);
-figure;
-imshow(new_img);
+% g = 'breath_of_the_wild';
+% img = im2double(imread(fullfile(game_art_dir, games(g).keyart_file)));
+% thumbs = read_images(fullfile(thumbnail_dir, games(g).thumbnail_dir, '*_*'));
+% new_img = mosaic3(img, permute(cat(4, thumbs.I), [4, 1:3]), block_size);
+% figure;
+% imshow(new_img);
