@@ -10,8 +10,7 @@ function out = mosaic3(J, thumbnails, block_size)
     chunks = mat2tiles(J, [block_size, block_size]);
     [row_chunks, col_chunks] = size(chunks);
     used = zeros([1, n_thumbs]);
-    % process
-    % e.g.,
+
     for i = 1:row_chunks
         for j = 1:col_chunks
             chunk = chunks{i, j};
@@ -28,15 +27,9 @@ function out = mosaic3(J, thumbnails, block_size)
             end
             used(best_thumbnail_index) = 1;
             chunks{i, j} = squeeze(thumbnails(best_thumbnail_index, :, :, :));
-            % figure;
-            % imshow(chunks{i, j})
         end
     end
 
-    % afterwards, full image
-    % e.g.,
-    % figure;
-    % imshow(cell2mat(chunks))
     out = cell2mat(chunks);
     out = imgaussfilt(out, 2);
     for x = 75:75:cols-75

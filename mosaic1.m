@@ -9,8 +9,7 @@ function out = mosaic1(J, thumbnails, block_size)
 
     chunks = mat2tiles(J, [block_size, block_size]);
     [row_chunks, col_chunks] = size(chunks);
-    % process
-    % e.g.,
+
     for i = 1:row_chunks
         for j = 1:col_chunks
             chunk = chunks{i, j};
@@ -21,14 +20,8 @@ function out = mosaic1(J, thumbnails, block_size)
             best_thumbnail_indices = find(mses == min(mses));
             best_thumbnail_index = best_thumbnail_indices(1); % only take the first
             chunks{i, j} = squeeze(thumbnails(best_thumbnail_index, :, :, :));
-            % figure;
-            % imshow(chunks{i, j})
         end
     end
 
-    % afterwards, full image
-    % e.g.,
-    % figure;
-    % imshow(cell2mat(chunks))
     out = cell2mat(chunks);
 end
