@@ -3,8 +3,13 @@ function out = mosaic(J, thumbnails, block_size)
     n_blocks = rows / block_size * cols / block_size;
     [n_thumbs, ~, ~, ~] = size(thumbnails);
 
+    if n_thumbs < n_blocks
+        error('n_thumbs (%d) < n_blocks (%d)', n_thumbs, n_blocks)
+    end
+
     chunks = mat2tiles(J, [block_size, block_size]);
     [row_chunks, col_chunks] = size(chunks);
+    used = zeros([1, n_thumbs]);
     % process
     % e.g.,
     for i = 1:row_chunks
@@ -16,6 +21,12 @@ function out = mosaic(J, thumbnails, block_size)
             end
             best_thumbnail_indices = find(mses == min(mses));
             best_thumbnail_index = best_thumbnail_indices(1); % only take the first
+            while (used(best_thumbnail_index) == 1)
+                mses(best_thumbnail_index) = 1;
+                best_thumbnail_indices = find(mses == min(mses));
+                best_thumbnail_index = best_thumbnail_indices(1); % only take the first
+            end
+            used(best_thumbnail_index) = 1;
             chunks{i, j} = squeeze(thumbnails(best_thumbnail_index, :, :, :));
             % figure;
             % imshow(chunks{i, j})
