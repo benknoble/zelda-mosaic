@@ -1,4 +1,4 @@
-function out = mosaic(J, thumbnails, block_size)
+function out = mosaic2(J, thumbnails, block_size)
     [rows, cols, ~] = size(J);
     n_blocks = rows / block_size * cols / block_size;
     [n_thumbs, ~, ~, ~] = size(thumbnails);
