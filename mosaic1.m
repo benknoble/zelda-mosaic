@@ -3,10 +3,6 @@ function out = mosaic1(J, thumbnails, block_size)
     n_blocks = rows / block_size * cols / block_size;
     [n_thumbs, ~, ~, ~] = size(thumbnails);
 
-    if n_thumbs < n_blocks
-        error('n_thumbs (%d) < n_blocks (%d)', n_thumbs, n_blocks)
-    end
-
     chunks = mat2tiles(J, [block_size, block_size]);
     [row_chunks, col_chunks] = size(chunks);
 
