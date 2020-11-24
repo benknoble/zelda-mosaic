@@ -3,8 +3,9 @@ function out = mosaic3(J, thumbnails, block_size)
     n_blocks = rows / block_size * cols / block_size;
     [n_thumbs, ~, ~, ~] = size(thumbnails);
 
+    threshold = 1;
     if n_thumbs < n_blocks
-        error('n_thumbs (%d) < n_blocks (%d)', n_thumbs, n_blocks)
+        threshold = ceil(n_blocks / n_thumbs);
     end
 
     chunks = mat2tiles(J, [block_size, block_size]);
@@ -20,26 +21,27 @@ function out = mosaic3(J, thumbnails, block_size)
             end
             best_thumbnail_indices = find(mses == min(mses));
             best_thumbnail_index = best_thumbnail_indices(1); % only take the first
-            while (used(best_thumbnail_index) == 1)
+            while (used(best_thumbnail_index) >= threshold)
                 mses(best_thumbnail_index) = 1;
                 best_thumbnail_indices = find(mses == min(mses));
                 best_thumbnail_index = best_thumbnail_indices(1); % only take the first
             end
-            used(best_thumbnail_index) = 1;
+            used(best_thumbnail_index) = used(best_thumbnail_index) + 1;
             chunks{i, j} = squeeze(thumbnails(best_thumbnail_index, :, :, :));
         end
     end
 
     out = cell2mat(chunks);
     out = imgaussfilt(out, 2);
-    for x = 75:75:cols-75
-        for xx = x-10:x+10
-            out(:, xx, :) = mean(out(:, xx-10:xx+10, :), 2);
+    strip_size = floor(block_size / 8);
+    for x = block_size:block_size:cols-block_size
+        for xx = x-strip_size:x+strip_size
+            out(:, xx, :) = mean(out(:, xx-strip_size:xx+strip_size, :), 2);
         end
     end
-    for y = 75:75:rows-75
-        for yy = y-10:y+10
-            out(yy, :, :) = mean(out(yy-10:yy+10, :, :), 1);
+    for y = block_size:block_size:rows-block_size
+        for yy = y-strip_size:y+strip_size
+            out(yy, :, :) = mean(out(yy-strip_size:yy+strip_size, :, :), 1);
         end
     end
 end
